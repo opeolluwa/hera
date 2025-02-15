@@ -1,1 +1,11 @@
-node_module 
+node_modules 
+
+test 
+
+.gitignore 
+
+.prettierrc
+
+eslintrc.js
+
+README.md 

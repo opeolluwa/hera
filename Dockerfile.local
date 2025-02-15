@@ -1,23 +1,22 @@
 # stage one, build the app 
-FROM node:18-alpine as builder 
-
+FROM node:18-alpine AS builder 
 WORKDIR /app 
-
 COPY  . .
-
 RUN npm install 
-
 RUN npm run build 
 
-FROM node:18-bullseye-slim
 
+FROM node:18-bullseye-slim AS runner
 WORKDIR /app 
-
-COPY --from=builder /app/dist .
+COPY --from=builder /app/dist /app/
 COPY --from=builder /app/package*.json /app/
-
 RUN npm install --omit=dev
+
+
+FROM node:18-bullseye-slim AS final 
+WORKDIR /app
+COPY --from=runner /app/ .
 
 EXPOSE 5000
 
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "node", "main.js"]
