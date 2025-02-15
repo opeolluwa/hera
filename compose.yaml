@@ -1,21 +1,21 @@
 services:
-  server:
-    build:
-      context: .
-      dockerfile: Dockerfile.local
-    ports:
-      - 5000:5000
-    depends_on:
-      postgres:
-        condition: service_healthy
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:${PORT}/health" ]
-      interval: 120s
-      timeout: 5s
-      retries: 10
-      start_period: 30s # Wait 30 seconds before starting health checks
-    environment:
-      - DATABASE_URL=postgres://hera:hera@postgres:5432/hera
+  # server:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.local
+  #   ports:
+  #     - 5000:5000
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: [ "CMD", "curl", "-f", "http://localhost:${PORT}/health" ]
+  #     interval: 120s
+  #     timeout: 5s
+  #     retries: 10
+  #     start_period: 30s # Wait 30 seconds before starting health checks
+  #   environment:
+  #     - DATABASE_URL=postgres://hera:hera@postgres:5432/hera
 
   postgres:
     image: postgres

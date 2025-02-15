@@ -10,7 +10,7 @@ default:
     just --list 
     
 start:
-    docker compose up -d 
+    docker compose up -d  && npm run start:dev
 
 stop:
     docker compose down
@@ -28,4 +28,5 @@ logs:
     docker compose logs -f {{APP_NAME}}
 
 
-
+migrate name:
+    npm run typeorm migration:create "src/migrations/{{name}}"
