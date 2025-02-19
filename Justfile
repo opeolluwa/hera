@@ -10,7 +10,7 @@ default:
     just --list 
     
 start:
-    docker compose up -d 
+    docker compose up -d  && just logs
 
 stop:
     docker compose down

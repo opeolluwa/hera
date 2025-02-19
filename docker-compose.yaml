@@ -8,8 +8,6 @@ services:
     depends_on:
       postgres:
         condition: service_started
-      # migration:
-        # condition: service_completed_successfully
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:${PORT}/health" ]
       interval: 120s
@@ -19,30 +17,13 @@ services:
     environment:
       - DATABASE_URL=postgres://hera:hera@postgres:5432/hera
       - PORT=5000
-      - DATABASE_HOST=hera
+      - DATABASE_HOST=postgres
       - DATABASE_PORT=5432
       - DATABASE_USERNAME=hera
       - DATABASE_PASSWORD=hera
       - DATABASE_NAME=hera
     volumes:
       - ./:/app
-
-  # migration:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.local
-  #   depends_on:
-  #     postgres:
-  #       condition: service_started
-  #   environment:
-  #     - DATABASE_URL=postgres://hera:hera@postgres:5432/hera
-  #     - PORT=5000
-  #     - DATABASE_HOST=hera
-  #     - DATABASE_PORT=5432
-  #     - DATABASE_USERNAME=hera
-  #     - DATABASE_PASSWORD=hera
-  #     - DATABASE_NAME=hera
-  #   command: npx typeorm migration:run -d dist/config/typeorm.config.js
   postgres:
     image: postgres
     restart: always
