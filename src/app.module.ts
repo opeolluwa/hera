@@ -4,21 +4,23 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { DriversModule } from './drivers/drivers.module';
+import { AdminModule } from './admin/admin.module';
 
+import typeorm from './config/typeorm';
 @Module({
   imports: [
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   host: 'localhost',
-    //   port: 3306,
-    //   username: 'drizzles',
-    //   password: 'thunderstorm',
-    //   database: 'rungo_dev',
-    //   entities: [],
-    //   synchronize: true,
-    // }),
-    ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) =>
+        configService.get('typeorm'),
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [typeorm],
+    }),
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -26,6 +28,9 @@ import { ConfigModule } from '@nestjs/config';
       },
     ]),
     AuthModule,
+    UsersModule,
+    DriversModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],
