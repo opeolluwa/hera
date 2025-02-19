@@ -1,9 +1,7 @@
 import { DataSource } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
 import { config } from 'dotenv';
 import { join } from 'path';
 
-const configService = new ConfigService();
 config();
 
 export default new DataSource({
@@ -16,5 +14,5 @@ export default new DataSource({
   url: process.env.DATABASE_URL,
   entities: [join(__dirname, '../entities/**/{*.ts,*.js}')],
   migrations: [join(__dirname, '../migrations/{*.ts,*.js}')],
-  logging: configService.get('NODE_ENV') === 'production' ? false : true,
+  logging: true,
 });

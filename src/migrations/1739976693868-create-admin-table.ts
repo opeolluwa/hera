@@ -1,13 +1,11 @@
-import { USER_INFORMATION } from 'src/constants/tableNames';
+import { ADMIN_INFORMATION } from 'src/constants/tableNames';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUsersInformationTable1739581016168
-  implements MigrationInterface
-{
+export class CreateAdminTable1739976693868 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: USER_INFORMATION,
+        name: ADMIN_INFORMATION,
         columns: [
           {
             name: 'identifier',
@@ -49,6 +47,6 @@ export class CreateUsersInformationTable1739581016168
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(USER_INFORMATION);
+    await queryRunner.dropTable(ADMIN_INFORMATION);
   }
 }
