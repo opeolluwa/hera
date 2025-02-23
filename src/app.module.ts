@@ -8,6 +8,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { DriversModule } from './drivers/drivers.module';
 import { AdminModule } from './admin/admin.module';
+import { CarsModule } from './cars/cars.module';
+import { PaymentModule } from './payment/payment.module';
+import { BookingModule } from './booking/booking.module';
+import { UserService } from './user/user.service';
+import { CarService } from './car/car.service';
 
 import typeorm from './config/typeorm';
 @Module({
@@ -31,8 +36,11 @@ import typeorm from './config/typeorm';
     UsersModule,
     DriversModule,
     AdminModule,
+    CarsModule,
+    PaymentModule,
+    BookingModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, UserService, CarService],
 })
 export class AppModule {}
