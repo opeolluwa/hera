@@ -1,11 +1,11 @@
-import { ADMIN_INFORMATION } from 'src/constants/tableNames';
+import { CAR_INFORMATION } from 'src/constants/tableNames';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateAdminTable1739976693868 implements MigrationInterface {
+export class CreateCarTable1740343665886 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.createTable(
+    queryRunner.createTable(
       new Table({
-        name: ADMIN_INFORMATION,
+        name: CAR_INFORMATION,
         columns: [
           {
             name: 'identifier',
@@ -13,20 +13,32 @@ export class CreateAdminTable1739976693868 implements MigrationInterface {
             isPrimary: true,
           },
           {
-            name: 'firstName',
+            name: 'carName',
             type: 'varchar',
           },
           {
-            name: 'lastName',
+            name: 'carModel',
             type: 'varchar',
           },
           {
-            name: 'email',
+            name: 'carYear',
+            type: 'int',
+          },
+          {
+            name: 'carColor',
+            type: 'varchar',
+          },
+          {
+            name: 'carType',
+            type: 'varchar',
+          },
+          {
+            name: 'carPlateNumber',
             type: 'varchar',
             isUnique: true,
           },
           {
-            name: 'password',
+            name: 'driverIdentifier',
             type: 'varchar',
           },
           {
@@ -37,10 +49,6 @@ export class CreateAdminTable1739976693868 implements MigrationInterface {
             name: 'lastUpdatedAt',
             type: 'date',
           },
-          {
-            name: 'isVerified',
-            type: 'boolean',
-          },
         ],
       }),
       true,
@@ -48,6 +56,6 @@ export class CreateAdminTable1739976693868 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(ADMIN_INFORMATION);
+    queryRunner.dropTable(CAR_INFORMATION, true);
   }
 }

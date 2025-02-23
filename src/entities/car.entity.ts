@@ -1,23 +1,32 @@
-import { USER_INFORMATION } from 'src/constants/tableNames';
+import { CAR_INFORMATION } from 'src/constants/tableNames';
 import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { ulid } from 'ulid';
 
-@Entity(USER_INFORMATION)
-export default class User {
+@Entity(CAR_INFORMATION)
+export default class Car {
   @PrimaryColumn()
   identifier: string;
 
   @Column()
-  firstName: string;
+  carName: string;
 
   @Column()
-  lastName: string;
+  carModel: string;
 
   @Column()
-  email: string;
+  carYear: number;
 
   @Column()
-  password: string;
+  carColor: string;
+
+  @Column()
+  carType: string;
+
+  @Column()
+  carPlateNumber: string;
+
+  @Column()
+  driverIdentifier: string;
 
   @Column({
     type: 'timestamp',
@@ -30,9 +39,6 @@ export default class User {
     default: () => 'CURRENT_TIMESTAMP',
   })
   lastUpdatedAt: Date;
-
-  @Column()
-  isVerified: boolean;
 
   @BeforeInsert()
   async setIdentifier() {

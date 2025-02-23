@@ -45,6 +45,7 @@ export class CreateUsersInformationTable1739581016168
           },
         ],
       }),
+      true,
     );
   }
 

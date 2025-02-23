@@ -1,16 +1,20 @@
-import { ADMIN_INFORMATION } from 'src/constants/tableNames';
+import { DRIVERS_INFORMATION } from 'src/constants/tableNames';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateAdminTable1739976693868 implements MigrationInterface {
+export class CreateDriverTable1740345005948 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: ADMIN_INFORMATION,
+        name: DRIVERS_INFORMATION,
         columns: [
           {
             name: 'identifier',
             type: 'varchar',
             isPrimary: true,
+          },
+          {
+            name: 'carIdentifier',
+            type: 'varchar',
           },
           {
             name: 'firstName',
@@ -25,6 +29,12 @@ export class CreateAdminTable1739976693868 implements MigrationInterface {
             type: 'varchar',
             isUnique: true,
           },
+
+          {
+            name: 'phoneNumber',
+            type: 'varchar',
+          },
+
           {
             name: 'password',
             type: 'varchar',
@@ -48,6 +58,6 @@ export class CreateAdminTable1739976693868 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(ADMIN_INFORMATION);
+    await queryRunner.dropTable(DRIVERS_INFORMATION);
   }
 }
