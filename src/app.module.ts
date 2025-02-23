@@ -5,14 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
 import { DriversModule } from './drivers/drivers.module';
 import { AdminModule } from './admin/admin.module';
-import { CarsModule } from './cars/cars.module';
 import { PaymentModule } from './payment/payment.module';
 import { BookingModule } from './booking/booking.module';
-import { UserService } from './user/user.service';
-import { CarService } from './car/car.service';
+import { CarModule } from './car/car.module';
+import { UsersModule } from './users/users.module';
 
 import typeorm from './config/typeorm';
 @Module({
@@ -36,11 +34,11 @@ import typeorm from './config/typeorm';
     UsersModule,
     DriversModule,
     AdminModule,
-    CarsModule,
     PaymentModule,
     BookingModule,
+    CarModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserService, CarService],
+  providers: [AppService],
 })
 export class AppModule {}
