@@ -10,6 +10,7 @@ import {
 import { CommonAuthService } from '../../auth/auth.service.common';
 import { CreateAdminDTO } from '../dto/createAdmin';
 import { AdminService } from './admin.service';
+import { ApiResponse } from 'src/adapters/apiResponse';
 @Injectable()
 export class AdminAuthService {
   constructor(
@@ -63,5 +64,7 @@ export class AdminAuthService {
         'The request could not be completed',
       );
     });
+
+    return new ApiResponse('Admin account successfully created', null);
   }
 }
