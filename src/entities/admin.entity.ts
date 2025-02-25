@@ -3,7 +3,7 @@ import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { ulid } from 'ulid';
 
 @Entity(ADMIN_INFORMATION)
-export default class User {
+export class Admin {
   @PrimaryColumn()
   identifier: string;
 
@@ -37,5 +37,8 @@ export default class User {
   @BeforeInsert()
   async setIdentifier() {
     this.identifier = ulid();
+    this.dateAdded = new Date();
+    this.lastUpdatedAt = new Date();
+    this.isVerified = false;
   }
 }

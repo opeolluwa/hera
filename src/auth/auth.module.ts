@@ -1,22 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { AdminAuthService } from './services/auth.admin.service';
-import { UserAuthService } from './services/auth.user.service';
-import { DriversAuthService } from './services/auth.drivers.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import User from '../entities/users.entity';
-import Admin from '../entities/admin.entity';
+import { AdminModule } from '../admin/admin.module';
+import { AdminService } from '../admin/services/admin.service';
+import { Admin } from '../entities/admin.entity';
 import Driver from '../entities/driver.entity';
+import User from '../entities/users.entity';
+import { CommonAuthService } from './auth.service.common';
+import { AdminAuthService } from '../admin/services/admin.auth.service';
+import { DriversAuthService } from './services/auth.drivers.service';
+import { UserAuthService } from './services/auth.user.service';
+import { AdminAuthController } from '../admin/controllers/admin.auth.controller';
 
 @Module({
-  controllers: [AuthController],
+  controllers: [AdminAuthController],
   providers: [
-    AuthService,
+    CommonAuthService,
     AdminAuthService,
     UserAuthService,
     DriversAuthService,
+    AdminService,
   ],
-  imports: [TypeOrmModule.forFeature([User, Admin, Driver])],
+  imports: [TypeOrmModule.forFeature([User, Admin, Driver]), AdminModule],
 })
 export class AuthModule {}
