@@ -11,14 +11,38 @@ import { PaymentModule } from './payment/payment.module';
 import { BookingModule } from './booking/booking.module';
 import { CarModule } from './car/car.module';
 import { UsersModule } from './users/users.module';
-
+import { MailerModule } from '@nestjs-modules/mailer';
 import typeorm from './config/typeorm';
+
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) =>
         configService.get('typeorm'),
+    }),
+    MailerModule.forRoot({
+      transport: "smtp://'':''@mailtutan",
+      defaults: {
+        from: '"Run.go" <admin@run.go>',
+        host: 'mailtutan',
+        port: 1025,
+        auth: {
+          user: '',
+          pass: '',
+        },
+      },
+      // template: {
+      //   dir: __dirname + '/templates',
+      //   adapter: new EjsAdapter(),
+      //   options: {
+      //     strict: true,
+      //   },
+      // },
+      // inject: [ConfigService],
+      // useFactory: (configService: ConfigService) => ({
+      //   ...configService.get('mailer'),
+      // }),
     }),
     ConfigModule.forRoot({
       isGlobal: true,
