@@ -11,7 +11,6 @@ export class UserAuthService {
   ) {}
 
   async register(payload: RegisterUserDTO) {
-
     // see if user exists in the database
     const user = this.userRepository.create(payload);
     user.firstName = payload.firstName;

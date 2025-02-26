@@ -2,6 +2,6 @@ import { Module } from '@nestjs/common';
 import { BookingService } from './booking.service';
 
 @Module({
-  providers: [BookingService]
+  providers: [BookingService],
 })
 export class BookingModule {}
