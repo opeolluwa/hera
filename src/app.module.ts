@@ -4,21 +4,50 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DriversModule } from './drivers/drivers.module';
+import { AdminModule } from './admin/admin.module';
+import { PaymentModule } from './payment/payment.module';
+import { BookingModule } from './booking/booking.module';
+import { CarModule } from './car/car.module';
+import { UsersModule } from './users/users.module';
+import { MailerModule } from '@nestjs-modules/mailer';
+import typeorm from './config/typeorm';
 
 @Module({
   imports: [
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   host: 'localhost',
-    //   port: 3306,
-    //   username: 'drizzles',
-    //   password: 'thunderstorm',
-    //   database: 'rungo_dev',
-    //   entities: [],
-    //   synchronize: true,
-    // }),
-    ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) =>
+        configService.get('typeorm'),
+    }),
+    MailerModule.forRoot({
+      transport: "smtp://'':''@mailtutan",
+      defaults: {
+        from: '"Run.go" <admin@run.go>',
+        host: 'mailtutan',
+        port: 1025,
+        auth: {
+          user: '',
+          pass: '',
+        },
+      },
+      // template: {
+      //   dir: __dirname + '/templates',
+      //   adapter: new EjsAdapter(),
+      //   options: {
+      //     strict: true,
+      //   },
+      // },
+      // inject: [ConfigService],
+      // useFactory: (configService: ConfigService) => ({
+      //   ...configService.get('mailer'),
+      // }),
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [typeorm],
+    }),
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -26,12 +55,14 @@ import { ConfigModule } from '@nestjs/config';
       },
     ]),
     AuthModule,
+    UsersModule,
+    DriversModule,
+    AdminModule,
+    PaymentModule,
+    BookingModule,
+    CarModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule {}
-
-
-

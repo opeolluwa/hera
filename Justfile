@@ -10,7 +10,7 @@ default:
     just --list 
     
 start:
-    docker compose up -d 
+    docker compose up -d  && just logs
 
 stop:
     docker compose down
@@ -25,7 +25,11 @@ restart:
     
 [doc("see the application log")]
 logs:
-    docker compose logs -f {{APP_NAME}}
+    docker compose logs -f server
 
 
+migrate name:
+    npm run typeorm migration:create "src/migrations/{{name}}"
 
+run-migrations:
+    npm run typeorm migration:run -d src/datasource.ts
