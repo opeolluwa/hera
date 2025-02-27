@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   HttpException,
   HttpStatus,
@@ -8,6 +9,7 @@ import {
   Logger,
   NotFoundException,
   UnauthorizedException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { CommonAuthService } from '../../auth/auth.service.common';
 import { CreateAdminDTO } from '../dto/createAdmin';
@@ -15,6 +17,11 @@ import { AdminService } from './admin.service';
 import { ApiResponse } from 'src/adapters/apiResponse';
 import { LoginAdminDTO } from '../dto/loginAdmin';
 import { JwtPayload } from 'src/interfaces/jwt';
+import { RequestPasswordResetDTO } from '../dto/requestPasswordReset';
+import { SetNewPasswordDTO } from '../dto/setNewPassword';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Admin } from '../../entities/admin.entity';
 @Injectable()
 export class AdminAuthService {
   constructor(
@@ -22,6 +29,8 @@ export class AdminAuthService {
     private readonly commonAuthService: CommonAuthService,
     @Inject(AdminService)
     private readonly adminService: AdminService,
+    @InjectRepository(Admin)
+    private readonly adminRepository: Repository<Admin>,
   ) {}
 
   private readonly logger = new Logger(AdminAuthService.name);
@@ -108,7 +117,53 @@ export class AdminAuthService {
     }
   }
 
-  public async requestPasswordReset() {}
+  public async requestPasswordReset(request: RequestPasswordResetDTO) {
+    try {
+      const admin = await this.adminService.findOneByEmail(request.email);
+      if (!admin) {
+        throw new NotFoundException('Invalid email');
+      }
+      //TODO: send email
+    } catch (error) {
+      if (error.status == HttpStatus.NOT_FOUND) {
+        throw new NotFoundException(error.message);
+      } else {
+        throw new UnprocessableEntityException(error.message);
+      }
+    }
+  }
 
-  public async setNewPassword() {}
+  public async setNewPassword(
+    request: SetNewPasswordDTO,
+    authorizedUser: JwtPayload,
+  ) {
+    try {
+      const admin = await this.adminService.findOneByEmail(
+        authorizedUser.userEmail,
+      );
+      if (!admin) {
+        throw new NotFoundException('Invalid email');
+      }
+
+      if (!Object.is(request.newPassword, request.confirmPassword)) {
+        throw new BadRequestException('passwords does not match ');
+      }
+      const hashedPassword = await this.commonAuthService
+        .hashPassword(request.newPassword)
+        .catch((error) => {
+          throw error;
+        });
+
+      admin.password = hashedPassword;
+      await this.adminRepository.save(admin).catch((error) => {
+        throw error;
+      });
+    } catch (error) {
+      if (error.status == HttpStatus.NOT_FOUND) {
+        throw new NotFoundException(error.message);
+      } else {
+        throw new HttpException(error.message, error.status);
+      }
+    }
+  }
 }
