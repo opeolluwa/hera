@@ -65,3 +65,4 @@ See documentation
 - [TypeORM migration guide](https://github.com/typeorm/typeorm/blob/master/docs/migrations.md)
 - [Typeorm](https://typeorm.io)
 - [NestJs](https://nestjs.com)
+- [API documentation](https://documenter.getpostman.com/view/18058225/2sAYdhHpNK)
