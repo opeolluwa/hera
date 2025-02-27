@@ -18,9 +18,6 @@ export default class Booking {
   paymentIdentifier: string;
 
   @Column()
-  carIdentifier: string;
-
-  @Column()
   pickupLocation: string;
 
   @Column()
@@ -52,7 +49,7 @@ export default class Booking {
   lastUpdatedAt: Date;
 
   @BeforeInsert()
-  async setIdentifier() {
+  private async setIdentifier() {
     this.identifier = ulid();
   }
 }
