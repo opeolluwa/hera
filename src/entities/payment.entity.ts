@@ -9,9 +9,6 @@ export default class Payment {
   identifier: string;
 
   @Column()
-  driverIdentifier: string;
-
-  @Column()
   userIdentifier: string;
 
   @Column({
@@ -22,6 +19,9 @@ export default class Payment {
 
   @Column()
   amount: number;
+
+  @Column()
+  referenceNumber: string;
 
   @Column({
     type: 'timestamp',
@@ -44,5 +44,8 @@ export default class Payment {
   @BeforeInsert()
   async setIdentifier() {
     this.identifier = ulid();
+    this.transactionDate = new Date();
+    this.dateAdded = new Date();
+    this.lastUpdatedAt = new Date();
   }
 }

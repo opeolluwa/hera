@@ -13,6 +13,7 @@ export const dataSourceOptions: DataSourceOptions = {
   database: `${process.env.DATABASE_NAME}`,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
+  logging: true,
 };
 
 export default registerAs('typeorm', () => dataSourceOptions);
