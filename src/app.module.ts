@@ -12,6 +12,7 @@ import { BookingModule } from './booking/booking.module';
 import { CarModule } from './car/car.module';
 import { UsersModule } from './users/users.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { StatsModule } from './stats/stats.module';
 import typeorm from './config/typeorm';
 
 @Module({
@@ -32,17 +33,6 @@ import typeorm from './config/typeorm';
           pass: '',
         },
       },
-      // template: {
-      //   dir: __dirname + '/templates',
-      //   adapter: new EjsAdapter(),
-      //   options: {
-      //     strict: true,
-      //   },
-      // },
-      // inject: [ConfigService],
-      // useFactory: (configService: ConfigService) => ({
-      //   ...configService.get('mailer'),
-      // }),
     }),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -61,6 +51,7 @@ import typeorm from './config/typeorm';
     PaymentModule,
     BookingModule,
     CarModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
